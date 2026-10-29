@@ -59,3 +59,19 @@ A documentação interativa fica em http://127.0.0.1:8000/docs.
 ```bash
 pytest
 ```
+
+## Qualidade e CI
+
+O workflow `.github/workflows/ci.yml` roda a cada pull request e a cada push
+na `main`. Ele instala `requirements-dev.txt` com `uv` e executa:
+
+```bash
+pylint document_analyzer --fail-under=10
+pylint tests --disable=missing-function-docstring,missing-class-docstring,too-few-public-methods,redefined-outer-name,unused-argument,line-too-long --fail-under=10
+pytest -q
+```
+
+O pacote de produção deve ficar com nota 10/10. Nos testes, algumas regras
+são desligadas porque fixtures e modelos falsos não precisam de docstring.
+Para exigir o CI antes de mesclar, marque o check **Tests and pylint (Python 3.13)**
+como obrigatório em *Settings → Branches* da `main`.

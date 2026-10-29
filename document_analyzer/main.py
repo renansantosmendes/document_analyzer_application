@@ -2,7 +2,6 @@
 
 from dotenv import load_dotenv
 from fastapi import FastAPI
-from langchain_openai import ChatOpenAI
 
 from document_analyzer.api.routes import router
 
@@ -24,9 +23,9 @@ def create_app() -> FastAPI:
     >>> client.get("/health").json()
     {'status': 'ok'}
     """
-    app = FastAPI(title="Document Analyzer", version="0.1.0")
-    app.include_router(router)
-    return app
+    application = FastAPI(title="Document Analyzer", version="0.1.0")
+    application.include_router(router)
+    return application
 
 
 app = create_app()

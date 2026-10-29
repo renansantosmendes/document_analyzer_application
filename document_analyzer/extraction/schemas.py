@@ -91,7 +91,10 @@ class PowerOfAttorneyData(BaseModel):
         description="Opposing party CNPJ, or null if absent."
     )
     allows_settlement: bool | None = Field(
-        description="Whether authority to settle/transigir is expressly granted, or null if unclear."
+        description=(
+            "Whether authority to settle/transigir is expressly granted, "
+            "or null if unclear."
+        ),
     )
 
 

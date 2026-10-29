@@ -2,7 +2,16 @@
 
 from document_analyzer.analysis.pipeline import extract_document
 from document_analyzer.classification.schemas import DocumentClassification
-from document_analyzer.extraction.schemas import NdaData
+from document_analyzer.extraction.schemas import (
+    CreditCardInvoiceData,
+    InvoiceTransaction,
+    NdaData,
+)
+from document_analyzer.invoice_analysis.schemas import (
+    InvoiceAdvice,
+    TransactionCategories,
+    TransactionCategory,
+)
 from tests.helpers import FakeStructuredLLM
 
 
@@ -31,9 +40,6 @@ def test_a_category_without_extractor_returns_no_data():
 
 
 def test_an_invoice_is_classified_extracted_and_analysed():
-    from document_analyzer.extraction.schemas import CreditCardInvoiceData, InvoiceTransaction
-    from document_analyzer.invoice_analysis.schemas import InvoiceAdvice, TransactionCategories, TransactionCategory
-
     invoice = CreditCardInvoiceData(
         issuer_bank="Banco X", cardholder_name=None, card_last_digits=None,
         closing_date=None, due_date=None, total_amount=120.0, minimum_payment=None,

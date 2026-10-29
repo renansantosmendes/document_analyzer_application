@@ -1,6 +1,11 @@
 """Tests of the extraction schemas: nullable fields and type coercion."""
 
-from document_analyzer.extraction.schemas import ExtrajudicialNoticeData, NdaData, ServiceContractData
+from document_analyzer.extraction.schemas import (
+    CreditCardInvoiceData,
+    ExtrajudicialNoticeData,
+    NdaData,
+    ServiceContractData,
+)
 
 
 def test_optional_fields_accept_null_when_the_text_has_no_value():
@@ -44,8 +49,6 @@ def test_list_fields_keep_the_values_stated_in_the_notice():
 
 
 def test_a_credit_card_invoice_keeps_its_transactions():
-    from document_analyzer.extraction.schemas import CreditCardInvoiceData
-
     data = CreditCardInvoiceData(
         issuer_bank="Banco X", cardholder_name=None, card_last_digits="1234",
         closing_date=None, due_date="10/02", total_amount="355.9", minimum_payment=None,

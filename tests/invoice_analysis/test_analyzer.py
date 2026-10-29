@@ -59,4 +59,4 @@ def test_an_invoice_without_charges_skips_the_model():
     result = analyze_invoice(llm, [{"date": None, "description": "Pagamento", "amount": -50.0, "installment": None}])
     assert result["total_spent"] == 0.0
     assert result["advice"]["suggestions"] == []
-    assert llm.prompts == []
+    assert not llm.prompts

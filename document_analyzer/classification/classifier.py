@@ -13,7 +13,8 @@ CLASSIFICATION_INSTRUCTION = (
     "categoria: service_contract (contrato de prestação de serviços), "
     "lease_contract (contrato de locação), extrajudicial_notice "
     "(notificação extrajudicial), power_of_attorney (procuração), nda "
-    "(acordo de confidencialidade) ou other (outro documento). Baseie-se "
+    "(acordo de confidencialidade), credit_card_invoice (fatura de cartão de "
+    "crédito) ou other (outro documento). Baseie-se "
     "somente no texto. Não extraia ainda os campos do documento e não invente "
     "informações."
 )

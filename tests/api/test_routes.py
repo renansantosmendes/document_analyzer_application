@@ -61,3 +61,17 @@ def test_upload_refuses_a_pdf_without_selectable_text(monkeypatch):
 def test_upload_without_a_file_is_refused_by_validation():
     with TestClient(create_app()) as client:
         assert client.post("/upload").status_code == 422
+
+
+def test_upload_explains_a_missing_credential(monkeypatch):
+    def missing_credentials():
+        raise KeyError("PGL_PASSWORD")
+
+    monkeypatch.setattr(routes, "get_token", missing_credentials)
+    with TestClient(create_app()) as client:
+        response = client.post(
+            "/upload",
+            files={"file": ("nota.pdf", b"%PDF-1.4 conteudo", "application/pdf")},
+        )
+    assert response.status_code == 500
+    assert "PGL_PASSWORD" in response.json()["detail"]

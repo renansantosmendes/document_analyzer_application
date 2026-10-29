@@ -119,3 +119,55 @@ class NdaData(BaseModel):
     term_years: int | None = Field(
         description="Confidentiality term in years, or null if absent."
     )
+
+
+class InvoiceTransaction(BaseModel):
+    """One charge or payment listed in a credit card invoice."""
+
+    date: str | None = Field(
+        description="Transaction date as written in the invoice, or null if absent."
+    )
+    description: str = Field(
+        description="Merchant or description exactly as written in the invoice."
+    )
+    amount: float = Field(
+        description="Amount in BRL: positive for charges, negative for payments and credits."
+    )
+    installment: str | None = Field(
+        description="Installment information such as '3/10', or null if not in installments."
+    )
+
+
+class CreditCardInvoiceData(BaseModel):
+    """Fields extracted from a credit card invoice."""
+
+    issuer_bank: str | None = Field(
+        description="Card issuer or bank name, or null if absent."
+    )
+    cardholder_name: str | None = Field(
+        description="Cardholder name, or null if absent."
+    )
+    card_last_digits: str | None = Field(
+        description="Last four digits of the card, or null if absent."
+    )
+    closing_date: str | None = Field(
+        description="Invoice closing date as written, or null if absent."
+    )
+    due_date: str | None = Field(
+        description="Payment due date as written, or null if absent."
+    )
+    total_amount: float | None = Field(
+        description="Total amount of the invoice in BRL, or null if absent."
+    )
+    minimum_payment: float | None = Field(
+        description="Minimum payment in BRL, or null if absent."
+    )
+    interest_and_fees: float | None = Field(
+        description=(
+            "Interest, fines and fees charged in this invoice in BRL, "
+            "or null if none are stated."
+        ),
+    )
+    transactions: list[InvoiceTransaction] = Field(
+        description="Every transaction listed in the invoice, in order; empty if absent."
+    )

@@ -10,6 +10,7 @@ DocumentType = Literal[
     "extrajudicial_notice",
     "power_of_attorney",
     "nda",
+    "credit_card_invoice",
     "other",
 ]
 

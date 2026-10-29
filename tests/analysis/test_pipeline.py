@@ -28,3 +28,30 @@ def test_a_category_without_extractor_returns_no_data():
     result = extract_document(llm, "outro.pdf", "Texto qualquer")
     assert result["document_type"] == "other"
     assert result["data"] is None
+
+
+def test_an_invoice_is_classified_extracted_and_analysed():
+    from document_analyzer.extraction.schemas import CreditCardInvoiceData, InvoiceTransaction
+    from document_analyzer.invoice_analysis.schemas import InvoiceAdvice, TransactionCategories, TransactionCategory
+
+    invoice = CreditCardInvoiceData(
+        issuer_bank="Banco X", cardholder_name=None, card_last_digits=None,
+        closing_date=None, due_date=None, total_amount=120.0, minimum_payment=None,
+        interest_and_fees=None,
+        transactions=[InvoiceTransaction(date="02/01", description="Farmácia", amount=120.0, installment=None)],
+    )
+    llm = FakeStructuredLLM(
+        DocumentClassification(document_type="credit_card_invoice", justification="Fatura."),
+        {
+            CreditCardInvoiceData: invoice,
+            TransactionCategories: TransactionCategories(
+                categories=[TransactionCategory(index=0, category="saude")]
+            ),
+            InvoiceAdvice: InvoiceAdvice(summary="Saúde.", suggestions=[]),
+        },
+    )
+    result = extract_document(llm, "fatura.pdf", "Texto da fatura")
+    assert result["document_type"] == "credit_card_invoice"
+    assert result["data"]["issuer_bank"] == "Banco X"
+    assert result["data"]["analysis"]["by_category"][0]["category"] == "saude"
+    assert result["data"]["analysis"]["advice"]["summary"] == "Saúde."

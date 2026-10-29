@@ -41,3 +41,17 @@ def test_list_fields_keep_the_values_stated_in_the_notice():
         response_deadline_days=15,
     )
     assert data.installment_values == [1200.0, 1200.0]
+
+
+def test_a_credit_card_invoice_keeps_its_transactions():
+    from document_analyzer.extraction.schemas import CreditCardInvoiceData
+
+    data = CreditCardInvoiceData(
+        issuer_bank="Banco X", cardholder_name=None, card_last_digits="1234",
+        closing_date=None, due_date="10/02", total_amount="355.9", minimum_payment=None,
+        interest_and_fees=None,
+        transactions=[{"date": "05/01", "description": "Mercado", "amount": 300, "installment": "1/3"}],
+    )
+    assert data.total_amount == 355.9
+    assert data.transactions[0].installment == "1/3"
+    assert data.transactions[0].amount == 300.0

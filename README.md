@@ -75,3 +75,17 @@ O pacote de produção deve ficar com nota 10/10. Nos testes, algumas regras
 são desligadas porque fixtures e modelos falsos não precisam de docstring.
 Para exigir o CI antes de mesclar, marque o check **Tests and pylint (Python 3.13)**
 como obrigatório em *Settings → Branches* da `main`.
+
+## Frontend de exemplo
+
+`frontend/index.html` é uma página única, sem build, que envia um PDF para a
+API e mostra o resultado em cartões animados (a animação usa o GSAP, carregado
+do cdnjs, então é preciso de internet).
+
+1. Suba a API: `uvicorn document_analyzer.main:app --reload`.
+2. Abra `frontend/index.html` no navegador (duplo clique basta).
+3. Arraste um PDF, clique em **Analisar documento** e veja a classificação e os campos.
+
+Se a API estiver em outro endereço, troque o campo **Endereço da API**. O CORS
+da API libera chamadas vindas de qualquer origem, o que permite abrir a página
+direto do disco durante a aula.

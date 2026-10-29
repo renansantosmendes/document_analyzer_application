@@ -7,6 +7,7 @@ from langchain_core.runnables import Runnable
 from pydantic import BaseModel
 
 from document_analyzer.extraction.schemas import (
+    CreditCardInvoiceData,
     ExtrajudicialNoticeData,
     LeaseContractData,
     NdaData,
@@ -46,6 +47,14 @@ EXTRACTION_SPECS = {
         "Extraia os dados de um acordo de confidencialidade, incluindo partes, "
         "CNPJs, multa e prazo.",
         NdaData,
+    ),
+    "credit_card_invoice": (
+        "Extraia os dados de uma fatura de cartão de crédito: banco emissor, "
+        "titular, últimos dígitos, datas, total, pagamento mínimo, juros e "
+        "encargos cobrados e todos os lançamentos, na ordem em que aparecem. "
+        "Valores monetários devem ser números em reais; compras e encargos são "
+        "positivos e pagamentos ou créditos são negativos.",
+        CreditCardInvoiceData,
     ),
 }
 

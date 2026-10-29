@@ -49,7 +49,13 @@ def upload(file: UploadFile = File(...)) -> dict[str, Any]:
         With status 422 when the file is not a readable PDF or has no
         selectable text.
     """
-    token = get_token()
+    try:
+        token = get_token()
+    except KeyError as error:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Variável de ambiente ausente no .env: {error.args[0]}.",
+        ) from error
     try:
         text = extract_text_from_pdf(file.file.read())
     except (PdfReadError, ValueError) as error:

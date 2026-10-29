@@ -2,6 +2,7 @@
 
 from dotenv import load_dotenv
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from document_analyzer.api.routes import router
 
@@ -24,6 +25,12 @@ def create_app() -> FastAPI:
     {'status': 'ok'}
     """
     application = FastAPI(title="Document Analyzer", version="0.1.0")
+    application.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_methods=["GET", "POST"],
+        allow_headers=["*"],
+    )
     application.include_router(router)
     return application
 
